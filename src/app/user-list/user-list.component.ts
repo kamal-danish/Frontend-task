@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatDialog} from '@angular/material';
 import { AuthService } from '../../service/auth.service'
 import { AddEmailComponent } from '../add-email/add-email.component';
+import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
 
 export interface PeriodicElement {
   name: string;
@@ -71,4 +72,18 @@ export class USerListComponent implements OnInit {
       
     });
   }
+
+  deleteEmail():void{
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      width: '350px',
+      data: "Do you confirm the deletion of this email?"
+    });
+dialogRef.afterClosed().subscribe(result => {
+      if(result == true) {
+        console.log(result)
+        console.log('Yes clicked');
+      }
+    });
+  }
+  
 }

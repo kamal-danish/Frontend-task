@@ -1,6 +1,6 @@
 import { NgModule,Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 
 

@@ -28,5 +28,9 @@ export class AuthService {
   addUserEmail(data){
     return this.http.post(this.domain + 'email/', data)
   }
+
+  // updateUserDetails(id,body){
+  //   return this.http.put(this.domain + `email/${id}`, body, { headers: this.getToken() }).toPromise()
+  // }
  
 }

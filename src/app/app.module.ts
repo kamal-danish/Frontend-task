@@ -8,13 +8,15 @@ import { USerListComponent } from './user-list/user-list.component';
 import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AddEmailComponent } from './add-email/add-email.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationPopupComponent } from './confirmation-popup/confirmation-popup.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     USerListComponent,
-    AddEmailComponent
+    AddEmailComponent,
+    ConfirmationPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms'
     
   ],
   providers: [],
-  entryComponents: [AddEmailComponent],
+  entryComponents: [AddEmailComponent,ConfirmationPopupComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
