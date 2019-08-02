@@ -6,8 +6,9 @@
     "Frontend": {
       "projectType": "application",
       "schematics": {},
-      "root": "",
+      "root": "e2e",
       "sourceRoot": "src",
+      
       "prefix": "app",
       "architect": {
         "build": {

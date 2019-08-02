@@ -1,0 +1,30 @@
+<div class="tr">
+  <button mat-raised-button color="accent" style="margin:10px 1%" (click)="addNewEmail()">Add New Email</button>
+
+</div>
+<table class="emp-table">
+<thead>
+  <tr>
+    <th>Serial No</th>
+    <th>Email</th>
+    <th>Action</th>
+  </tr>
+
+</thead>
+<tbody>
+  <tr >
+    <td>
+     1
+    </td>
+    <td>
+        danish@gmail.com
+    </td>
+  
+    <td class="update">
+      <mat-icon class="mr-15 color-green" aria-hidden="false" aria-label="Example edit icon" (click)="updateEmail()">edit</mat-icon>
+      <mat-icon class="color-red" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+      </td>
+  </tr>
+</tbody>
+</table>
+
