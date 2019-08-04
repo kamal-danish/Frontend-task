@@ -1,28 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource, MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { AuthService } from '../../service/auth.service'
 import { AddEmailComponent } from '../add-email/add-email.component';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
+import { CommonService } from '../common.service';
+import { EditEmailComponent } from '../edit-email/edit-email.component'
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 
 @Component({
@@ -31,59 +15,83 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-list.component.css']
 })
 export class USerListComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  emailList: [];
+  tableEmailValidate: string;
+  idtableEmail: any;
   constructor(
-    private auth:AuthService,
-    public dialog: MatDialog
+    private auth: AuthService,
+    public dialog: MatDialog,
+    private commonSer: CommonService
   ) { }
 
   ngOnInit() {
-   // this.getUserEmail();
+    this.getUserEmail();
   }
 
-  // getUserEmail(){
+  getUserEmail() {
+    this.auth.getUserListByEmail().subscribe((data: any) => {
+      this.emailList = data;
+    }, error => {
+      this.commonSer.openSnakBar("Something went wrong");
+    });
+  }
 
-  //   this.auth.getUserListByEmail().subscribe((data:any)=>{
-  //     console.log('data',data);
-  //   })
-  // }
 
-  updateEmail(): void {
+  addNewEmail(): void {
     const dialogRef = this.dialog.open(AddEmailComponent, {
-      width: '250px',
+      width: '300px',
       data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      
+      if (result == true) {
+        this.getUserEmail();
+      }
     });
   }
 
-  addNewEmail(): void{
-    const dialogRef = this.dialog.open(AddEmailComponent, {
-      width: '250px',
-      data: {}
+  updateEmail(email): void {
+    const dialogRef = this.dialog.open(EditEmailComponent, {
+      width: '300px',
+      data: {
+        tableEmailEmailAddress: email.tableEmailEmailAddress,
+        tableEmailValidate: email.tableEmailValidate,
+        idtableEmail: email.idtableEmail
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      
+      if (result == true) {
+        this.getUserEmail();
+      }
     });
   }
 
-  deleteEmail():void{
+  deleteEmail(email): void {
     const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
       width: '350px',
       data: "Do you confirm the deletion of this email?"
     });
-dialogRef.afterClosed().subscribe(result => {
-      if(result == true) {
-        console.log(result)
-        console.log('Yes clicked');
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == true) {
+        this.idtableEmail = email.idtableEmail;
+        this.deleteUserEmail(this.idtableEmail)
       }
     });
   }
-  
+
+
+  deleteUserEmail(idtableEmail) {
+    this.auth.deleteEmailById(idtableEmail).subscribe((data: any) => {
+      if (data == true) {
+        this.commonSer.openSnakBar('Email deleted succefully');
+        this.getUserEmail();
+      } else {
+        this.commonSer.openSnakBar('Something went wrong');
+      }
+    }, error => {
+      this.commonSer.openSnakBar('Something went wrong')
+    })
+  }
+
 }

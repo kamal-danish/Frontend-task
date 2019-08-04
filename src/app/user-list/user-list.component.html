@@ -12,17 +12,17 @@
 
 </thead>
 <tbody>
-  <tr >
+  <tr *ngFor="let email of emailList;index as i">
     <td>
-     1
+     {{i+1}}
     </td>
     <td>
-        danish@gmail.com
+        {{email.tableEmailEmailAddress}}
     </td>
   
     <td class="update">
-      <mat-icon class="mr-15 color-green" aria-hidden="false" aria-label="Example edit icon"  matTooltip="Edit Email" (click)="updateEmail()">edit</mat-icon>
-      <mat-icon class="color-red" aria-hidden="false" aria-label="Example delete icon"  matTooltip="Delete Email" (click)="deleteEmail()">delete</mat-icon>
+      <mat-icon class="mr-15 color-green" aria-hidden="false" aria-label="Example edit icon"  matTooltip="Edit Email" (click)="updateEmail(email)">edit</mat-icon>
+      <mat-icon class="color-red" aria-hidden="false" aria-label="Example delete icon"  matTooltip="Delete Email" (click)="deleteEmail(email)">delete</mat-icon>
       </td>
   </tr>
 </tbody>

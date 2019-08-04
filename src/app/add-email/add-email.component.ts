@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit,Inject } from '@angular/core';
+import { MatDialog,MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import { CommonService } from '../common.service';
+import { Validate } from '../../service/validate'
 
 @Component({
   selector: 'app-add-email',
@@ -11,41 +11,51 @@ import { CommonService } from '../common.service';
   styleUrls: ['./add-email.component.css']
 })
 export class AddEmailComponent implements OnInit {
-  emailForm: FormGroup
+  tableEmailValidate: string;
+  idtableEmail: any;
+  email:any;
+
+  user: any = {};
 
   constructor(public dialog: MatDialog,
     private fb: FormBuilder,
     private auth: AuthService,
-    private commonSer: CommonService) { }
+    private commonSer: CommonService,
+    private validate:Validate,
+    public dialogRef: MatDialogRef<AddEmailComponent>,
+    @Inject(MAT_DIALOG_DATA) public message: any) { 
+    }
 
   ngOnInit() {
-    this.createForm();
   }
 
   createForm() {
-    let emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    this.emailForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(emailregex)]]
-    })
   }
   
-  get f() {
-    return this.emailForm.controls;
-  }
-  getErrorEmail() {
-    return this.emailForm.get('email').hasError('required') ? 'Field is required' :
-      this.emailForm.get('email').hasError('pattern') ? 'Not a valid emailaddress' : '';
-  }
-
-  addEmail() {
-    this.commonSer.openSnakBar("Something went wrong");
+  addEmail(user) {
+    if (!this.validate.checkValidations(user)) {
+      return;
+    }
+    if(user.email){
+      this.tableEmailValidate = 'true'
+    }
     let data = {
-      tableEmailEmailAddress: this.emailForm.value,
-      tableEmailvalidate: true
+      tableEmailEmailAddress: user.email,
+      tableEmailValidate: this.tableEmailValidate
     }
     this.auth.addUserEmail(data).subscribe((data: any) => {
-      console.log(data, 'data')
-    })
+      this.idtableEmail = data.idtableEmail;
+      if(this.idtableEmail){
+        this.commonSer.openSnakBar("Email registered successfully");
+        this.dialogRef.close(true)
+      }else{
+        this.commonSer.openSnakBar("Something went wrong");
+        this.dialogRef.close(false)
+      }
+    }, error => {
+      this.commonSer.openSnakBar("Something went wrong");
+      this.dialogRef.close(false)
+    });
   }
   updateEmailById(){
     
