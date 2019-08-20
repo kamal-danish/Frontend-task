@@ -11,6 +11,7 @@ import { ReactiveFormsModule,FormsModule  } from '@angular/forms';
 import { ConfirmationPopupComponent } from './confirmation-popup/confirmation-popup.component';
 import { EditEmailComponent } from './edit-email/edit-email.component';
 import { Validate } from '../service/validate';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { Validate } from '../service/validate';
     USerListComponent,
     AddEmailComponent,
     ConfirmationPopupComponent,
-    EditEmailComponent
+    EditEmailComponent,
+    ReactiveFormComponent
   ],
   imports: [
     BrowserModule,
